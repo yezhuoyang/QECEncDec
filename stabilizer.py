@@ -69,7 +69,54 @@ class QuantumState:
         for stabstring in stabilizer._stringList:
             self.act_stablizer(stabstring)
         self.normalize()
+<<<<<<< HEAD
         self._state_vec=filter_non_zero_values(self._state_vec)
+=======
+
+
+    '''
+    Multiply I+XZX
+    '''
+    def act_stablizer(self,String):
+        new_state_vec={}
+        for key in self._state_vec.keys():
+            if key in new_state_vec.keys():
+                new_state_vec[key]=new_state_vec[key]+self._state_vec[key]
+            else:
+                new_state_vec[key]=self._state_vec[key]
+            newstatekey=""
+            sign=1
+            for index in range(0,len(key)):
+                if(String[index]=="I"):
+                    newstatekey=newstatekey+key[index]
+                elif(String[index]=="Z"):
+                    newstatekey=newstatekey+key[index]
+                    if(key[index]=="1"):
+                        sign=(-1)*sign
+                elif(String[index]=="X"):
+                    if(key[index]=="1"):
+                        newstatekey=newstatekey+"0"
+                    else:
+                        newstatekey=newstatekey+"1"
+            if newstatekey in new_state_vec.keys(): 
+                new_state_vec[newstatekey]=new_state_vec[newstatekey]+sign*self._state_vec[key]
+            else:
+                new_state_vec[newstatekey]=sign*self._state_vec[key]           
+        self._state_vec=new_state_vec
+
+
+    def act_stabilizer_group(self,stabilizer):
+        for stabstring in stabilizer._stringList:
+            self.act_stablizer(stabstring)
+        self.normalize()
+
+    '''
+    check whether sthe stabilizer stabilize the state
+    '''    
+    def check_stablizer(self,String):
+        pass
+
+>>>>>>> 60450f552aeafd0ed560c205335ab35ae7608082
 
 
 class Stabilizer:
